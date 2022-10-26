@@ -22,16 +22,31 @@
 ))
 
 
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (if (seq args) (doseq [arg args] (println arg)) (throw (Exception. "Usage: lein run [numberofeventstogenerate]")))
-  (def timeslots (into [] (sorted-rand-hourstrips 0 10)))
-  (def combinedtimeslots (into [] (timeslotcomb 0 timeslots))) 
-
+(defn createsortedslotscombineandreportoverlap [n] (
+  def timeslots (into [] (sorted-rand-hourstrips 0 n))) 
+  (def overlappedtimeslots (into [] (timeslotsoverlapped (into [] (timeslotcomb 0 timeslots)))))
+  
   (println "Time Slots Sorted:")
   (doseq [timeslot timeslots] (println timeslot))
   
   (println "Time Slots Combined:")
-  (doseq [combinedtimeslot combinedtimeslots] (println combinedtimeslot)) 
-  (printoverlappingslots combinedtimeslots))
+  (doseq [combinedtimeslot (into [] (timeslotcomb 0 timeslots))] (println combinedtimeslot)) 
+  (doseq [overlappedtimeslot (into [] overlappedtimeslots)] (println "TimeSlots Overlapping: " overlappedtimeslot))
+
+  ) 
+
+  
+(defn -main
+  "I don't do a whole lot ... yet."
+  [& args]
+  (if (seq args) (doseq [arg args] (createsortedslotscombineandreportoverlap (Integer. arg))) (throw (Exception. "Usage: lein run [numberofeventstogenerate]")))
+  ;(def timeslots (into [] (sorted-rand-hourstrips 0 10)))
+  ;(def combinedtimeslots (into [] (timeslotcomb 0 timeslots))) 
+
+  ;(println "Time Slots Sorted:")
+  ;(doseq [timeslot timeslots] (println timeslot))
+  
+  ;(println "Time Slots Combined:")
+  ;(doseq [combinedtimeslot combinedtimeslots] (println combinedtimeslot)) 
+  ;(printoverlappingslots combinedtimeslots))
+)
